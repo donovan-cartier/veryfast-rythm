@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmka0deybsvhv"]
+
+[ext_resource type="Texture2D" uid="uid://bisx1iie8cifw" path="res://Assets/Sprites/marker.png" id="1_oxbq0"]
+
+[node name="NextLocationMarker" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_oxbq0")

@@ -1,17 +1,56 @@
-[gd_scene load_steps=4 format=3 uid="uid://dt7pwwvr5a582"]
+[gd_scene load_steps=6 format=3 uid="uid://dt7pwwvr5a582"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/player.gd" id="1_kh8h5"]
-[ext_resource type="Texture2D" uid="uid://0ddpnvoh2jcm" path="res://icon.svg" id="2_lqmap"]
+[ext_resource type="Texture2D" uid="uid://hn847tmu8nx6" path="res://Assets/Sprites/player.png" id="2_mfg6v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dq8m2"]
-size = Vector2(32, 32)
+size = Vector2(26, 15)
+
+[sub_resource type="Animation" id="Animation_j0pat"]
+resource_name = "beat"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0.45098, 0.384314, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tjl8p"]
+_data = {
+"beat": SubResource("Animation_j0pat")
+}
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_kh8h5")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_lqmap")
+texture = ExtResource("2_mfg6v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_dq8m2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tjl8p")
+}

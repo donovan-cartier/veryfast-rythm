@@ -1,41 +1,91 @@
-[gd_scene load_steps=5 format=3 uid="uid://qm7eviy0qe0"]
+[gd_scene load_steps=10 format=3 uid="uid://qm7eviy0qe0"]
 
 [ext_resource type="PackedScene" uid="uid://dt7pwwvr5a582" path="res://Scenes/player.tscn" id="1_h6x65"]
-[ext_resource type="Script" path="res://Scenes/Scripts/ball.gd" id="2_aveed"]
-[ext_resource type="Texture2D" uid="uid://0ddpnvoh2jcm" path="res://icon.svg" id="2_ldin7"]
+[ext_resource type="Script" path="res://Scenes/game.gd" id="1_j5i48"]
+[ext_resource type="Texture2D" uid="uid://mls2k44f147x" path="res://Assets/Sprites/background.png" id="1_qw33h"]
+[ext_resource type="PackedScene" uid="uid://d4lpm5nhdk08t" path="res://Scenes/eye_ball.tscn" id="3_l41dp"]
+[ext_resource type="Shader" path="res://Shaders/beat.gdshader" id="4_ttde0"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ntyfo"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wg4v7"]
+shader = ExtResource("4_ttde0")
+shader_parameter/enabled = true
+shader_parameter/white_level = 1.0
+
+[sub_resource type="Animation" id="Animation_a3klm"]
+resource_name = "flash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenShader:material:shader_parameter/white_level")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 1.7, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_gyd15"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenShader:material:shader_parameter/white_level")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n7ri0"]
+_data = {
+"RESET": SubResource("Animation_gyd15"),
+"flash": SubResource("Animation_a3klm")
+}
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_j5i48")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(160, 90)
+texture = ExtResource("1_qw33h")
 
 [node name="Player" parent="." instance=ExtResource("1_h6x65")]
-position = Vector2(320, 344)
+position = Vector2(160, 156)
 
 [node name="LevelBounds" type="StaticBody2D" parent="."]
+visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="LevelBounds"]
-polygon = PackedVector2Array(-64, 0, -64, 408, 0, 408, 640, 408, 640, 360, 0, 360, 0, 0, 640, 0, 640, 408, 704, 408, 704, 0, 704, -48, -64, -48)
+polygon = PackedVector2Array(-64, 0, -60, 240, 0, 240, 390, 240, 390, 180, 0, 180, 0, 0, 320, 0, 320, 180, 390, 180, 390, -50, 320, -48, -64, -48)
 
-[node name="Ball" type="Area2D" parent="." node_paths=PackedStringArray("ball_default_location")]
-position = Vector2(320, 120)
-script = ExtResource("2_aveed")
+[node name="EyeBall" parent="." node_paths=PackedStringArray("ball_default_location") instance=ExtResource("3_l41dp")]
+position = Vector2(160, 60)
 ball_default_location = NodePath("../BallDefaultLocation")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
-shape = SubResource("CircleShape2D_ntyfo")
-
-[node name="Sprite2D" type="Sprite2D" parent="Ball"]
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("2_ldin7")
-
 [node name="BallDefaultLocation" type="Marker2D" parent="."]
-position = Vector2(320, 120)
-
-[node name="MaxLocation" type="Marker2D" parent="."]
-position = Vector2(624, 360)
-
-[node name="MinLocation" type="Marker2D" parent="."]
-position = Vector2(16, 360)
+position = Vector2(162, 58)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScreenShader" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_wg4v7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShaderAnimator" type="AnimationPlayer" parent="CanvasLayer/ScreenShader"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_n7ri0")
+}
