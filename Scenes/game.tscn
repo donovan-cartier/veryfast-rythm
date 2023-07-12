@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://qm7eviy0qe0"]
+
+[ext_resource type="PackedScene" uid="uid://dt7pwwvr5a582" path="res://Scenes/player.tscn" id="1_h6x65"]
+[ext_resource type="Script" path="res://Scenes/Scripts/ball.gd" id="2_aveed"]
+[ext_resource type="Texture2D" uid="uid://0ddpnvoh2jcm" path="res://icon.svg" id="2_ldin7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ntyfo"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_h6x65")]
+position = Vector2(320, 344)
+
+[node name="LevelBounds" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="LevelBounds"]
+polygon = PackedVector2Array(-64, 0, -64, 408, 0, 408, 640, 408, 640, 360, 0, 360, 0, 0, 640, 0, 640, 408, 704, 408, 704, 0, 704, -48, -64, -48)
+
+[node name="Ball" type="Area2D" parent="." node_paths=PackedStringArray("ball_default_location")]
+position = Vector2(320, 120)
+script = ExtResource("2_aveed")
+ball_default_location = NodePath("../BallDefaultLocation")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+shape = SubResource("CircleShape2D_ntyfo")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("2_ldin7")
+
+[node name="BallDefaultLocation" type="Marker2D" parent="."]
+position = Vector2(320, 120)
+
+[node name="MaxLocation" type="Marker2D" parent="."]
+position = Vector2(624, 360)
+
+[node name="MinLocation" type="Marker2D" parent="."]
+position = Vector2(16, 360)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
