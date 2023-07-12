@@ -7,3 +7,5 @@ extends Node
 @onready var shader_animator : AnimationPlayer = screen_shader.get_node("ShaderAnimator")
 @onready var ball : Ball = game_container.get_node("EyeBall")
 @onready var player : Player = game_container.get_node("Player")
+@onready var audio_player : AudioStreamPlayer = game_container.get_node("AudioStreamPlayer")
+@onready var ui_health_bar : TextureProgressBar = canvas_layer.get_node("UI/HealthBar")

@@ -1,10 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://qm7eviy0qe0"]
+[gd_scene load_steps=16 format=3 uid="uid://qm7eviy0qe0"]
 
 [ext_resource type="PackedScene" uid="uid://dt7pwwvr5a582" path="res://Scenes/player.tscn" id="1_h6x65"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_j5i48"]
 [ext_resource type="Texture2D" uid="uid://mls2k44f147x" path="res://Assets/Sprites/background.png" id="1_qw33h"]
 [ext_resource type="PackedScene" uid="uid://d4lpm5nhdk08t" path="res://Scenes/eye_ball.tscn" id="3_l41dp"]
 [ext_resource type="Shader" path="res://Shaders/beat.gdshader" id="4_ttde0"]
+[ext_resource type="AudioStream" uid="uid://mc3dwy7wp7gj" path="res://Assets/Sounds/BGM.mp3" id="6_vobov"]
+[ext_resource type="Texture2D" uid="uid://dshodi5tel8up" path="res://Assets/Sprites/health_bg.png" id="7_mdypk"]
+[ext_resource type="Texture2D" uid="uid://wfo2irwwikb6" path="res://Assets/Sprites/health_fill.png" id="8_3dpyr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w2pm4"]
+size = Vector2(320, 16)
 
 [sub_resource type="Animation" id="Animation_qppys"]
 resource_name = "shake"
@@ -92,6 +98,13 @@ ball_default_location = NodePath("../BallDefaultLocation")
 [node name="BallDefaultLocation" type="Marker2D" parent="."]
 position = Vector2(162, 58)
 
+[node name="HurtZone" type="Area2D" parent="."]
+position = Vector2(160, 170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtZone"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_w2pm4")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 90)
 
@@ -99,6 +112,9 @@ position = Vector2(160, 90)
 libraries = {
 "": SubResource("AnimationLibrary_4nw2l")
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_vobov")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -115,3 +131,27 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_n7ri0")
 }
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -10.0
+offset_right = 55.0
+offset_bottom = -4.0
+grow_vertical = 0
+value = 100.0
+texture_under = ExtResource("7_mdypk")
+texture_progress = ExtResource("8_3dpyr")
+
+[connection signal="area_entered" from="HurtZone" to="EyeBall" method="_on_hurt_zone_area_entered"]

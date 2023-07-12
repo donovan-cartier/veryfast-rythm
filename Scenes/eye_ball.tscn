@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d4lpm5nhdk08t"]
+[gd_scene load_steps=10 format=3 uid="uid://d4lpm5nhdk08t"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/ball.gd" id="1_ivdx4"]
 [ext_resource type="Texture2D" uid="uid://njtotmlyvjff" path="res://Assets/Sprites/eye.png" id="2_h3h4s"]
+[ext_resource type="AudioStream" uid="uid://d0d2vwrydirnw" path="res://Assets/Sounds/hitball.wav" id="3_fpcff"]
+[ext_resource type="AudioStream" uid="uid://3sagdjfv66wc" path="res://Assets/Sounds/hitHurt.wav" id="3_rkfob"]
+[ext_resource type="AudioStream" uid="uid://csb8mjmkxtkxm" path="res://Assets/Sounds/blip.wav" id="5_1rxmq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntyfo"]
 
@@ -82,5 +85,14 @@ texture = ExtResource("2_h3h4s")
 libraries = {
 "": SubResource("AnimationLibrary_qfjbd")
 }
+
+[node name="SoundPlayerGetHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fpcff")
+
+[node name="SoundPlayerHitPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_rkfob")
+
+[node name="SoundPlayerBlip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_1rxmq")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
