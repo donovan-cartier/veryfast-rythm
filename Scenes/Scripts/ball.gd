@@ -3,6 +3,7 @@ class_name Ball
 
 @export var ball_default_location : Marker2D
 @onready var animation_player := $AnimationPlayer
+@onready var sprite := $Sprite2D
 
 var next_location_marker = preload("res://Scenes/next_location_marker.tscn")
 var next_location_marker_instance
@@ -17,7 +18,7 @@ func _ready():
 
 func start_sequence():
 	if towards_player:
-		bounce_to_location(next_location, .3)
+		bounce_to_location(next_location, MusicManager.time_between_beats)
 		animation_player.play("attack")
 	else:
 		bounce_to_location(ball_default_location.global_position)
@@ -25,11 +26,14 @@ func start_sequence():
 	
 	towards_player = !towards_player
 
-func bounce_to_location(location: Vector2, duration: float = .2):
-	print(next_location)
+func bounce_to_location(location: Vector2, duration: float = .2, hit_player: bool = false):
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", location, duration)
-	next_location = get_random_location()
+	
+	if !hit_player:
+		next_location = get_random_location()
+		if location == ball_default_location.global_position:
+			GameManager.camera.get_node("AnimationPlayer").play("shake")
 	
 func get_random_location():
 	var viewport_size = GameManager.camera.get_viewport_rect().size
@@ -37,4 +41,10 @@ func get_random_location():
 
 func _on_body_entered(body):
 	if body is Player:
-		bounce_to_location(ball_default_location.global_position)
+		bounce_to_location(ball_default_location.global_position, .2, true)
+		hit()
+		
+func hit():
+	var tween: Tween = create_tween()
+	tween.tween_property(sprite, "modulate:v", 1, 0.3).from(15)
+	animation_player.play("hit")

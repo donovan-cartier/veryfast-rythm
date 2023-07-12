@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d4lpm5nhdk08t"]
+[gd_scene load_steps=7 format=3 uid="uid://d4lpm5nhdk08t"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/ball.gd" id="1_ivdx4"]
 [ext_resource type="Texture2D" uid="uid://njtotmlyvjff" path="res://Assets/Sprites/eye.png" id="2_h3h4s"]
@@ -34,9 +34,38 @@ tracks/1/keys = {
 "values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_w2lfi"]
+resource_name = "hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.6, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qfjbd"]
 _data = {
-"attack": SubResource("Animation_033ba")
+"attack": SubResource("Animation_033ba"),
+"hit": SubResource("Animation_w2lfi")
 }
 
 [node name="EyeBall" type="Area2D"]

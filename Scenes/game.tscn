@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://qm7eviy0qe0"]
+[gd_scene load_steps=12 format=3 uid="uid://qm7eviy0qe0"]
 
 [ext_resource type="PackedScene" uid="uid://dt7pwwvr5a582" path="res://Scenes/player.tscn" id="1_h6x65"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_j5i48"]
@@ -6,10 +6,46 @@
 [ext_resource type="PackedScene" uid="uid://d4lpm5nhdk08t" path="res://Scenes/eye_ball.tscn" id="3_l41dp"]
 [ext_resource type="Shader" path="res://Shaders/beat.gdshader" id="4_ttde0"]
 
+[sub_resource type="Animation" id="Animation_qppys"]
+resource_name = "shake"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0461546, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(160, 90), Vector2(165, 85), Vector2(160, 90)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4nw2l"]
+_data = {
+"shake": SubResource("Animation_qppys")
+}
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wg4v7"]
 shader = ExtResource("4_ttde0")
 shader_parameter/enabled = true
 shader_parameter/white_level = 1.0
+
+[sub_resource type="Animation" id="Animation_gyd15"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenShader:material:shader_parameter/white_level")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
 
 [sub_resource type="Animation" id="Animation_a3klm"]
 resource_name = "flash"
@@ -25,21 +61,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [1.0, 1.7, 1.0]
-}
-
-[sub_resource type="Animation" id="Animation_gyd15"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ScreenShader:material:shader_parameter/white_level")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n7ri0"]
@@ -72,7 +93,12 @@ ball_default_location = NodePath("../BallDefaultLocation")
 position = Vector2(162, 58)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-anchor_mode = 0
+position = Vector2(160, 90)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera2D"]
+libraries = {
+"": SubResource("AnimationLibrary_4nw2l")
+}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
