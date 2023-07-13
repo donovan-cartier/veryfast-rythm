@@ -7,6 +7,7 @@ class_name Ball
 @onready var sound_player_get_hit = $SoundPlayerGetHit
 @onready var sound_player_hit_player = $SoundPlayerHitPlayer
 @onready var sound_player_blip = $SoundPlayerBlip
+@onready var blood_sprite = $BloodSprite
 
 
 var next_location_marker = preload("res://Scenes/next_location_marker.tscn")
@@ -56,6 +57,9 @@ func hit():
 	var tween: Tween = create_tween()
 	tween.tween_property(sprite, "modulate:v", 1, 0.3).from(15)
 	animation_player.play("hit")
+	blood_sprite.visible = true
+	blood_sprite.play("default")
+	GameManager.player.add_multiplier()
 
 func _on_hurt_zone_area_entered(area):
 	if area is Ball:
@@ -73,3 +77,7 @@ func _on_bgm_player_beat():
 	if got_hit:
 		play_hit_sound()
 	start_sequence()
+
+
+func _on_animated_sprite_2d_animation_finished():
+	blood_sprite.visible = false

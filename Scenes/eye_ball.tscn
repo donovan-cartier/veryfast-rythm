@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://d4lpm5nhdk08t"]
+[gd_scene load_steps=16 format=3 uid="uid://d4lpm5nhdk08t"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/ball.gd" id="1_ivdx4"]
 [ext_resource type="Texture2D" uid="uid://njtotmlyvjff" path="res://Assets/Sprites/eye.png" id="2_h3h4s"]
 [ext_resource type="AudioStream" uid="uid://d0d2vwrydirnw" path="res://Assets/Sounds/hitball.wav" id="3_fpcff"]
 [ext_resource type="AudioStream" uid="uid://3sagdjfv66wc" path="res://Assets/Sounds/hitHurt.wav" id="3_rkfob"]
 [ext_resource type="AudioStream" uid="uid://csb8mjmkxtkxm" path="res://Assets/Sounds/blip.wav" id="5_1rxmq"]
+[ext_resource type="Texture2D" uid="uid://cl4marnogkfd4" path="res://Assets/Sprites/blood-Sheet.png" id="6_xpmc8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntyfo"]
 
@@ -71,6 +72,42 @@ _data = {
 "hit": SubResource("Animation_w2lfi")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_im5pw"]
+atlas = ExtResource("6_xpmc8")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lm4lb"]
+atlas = ExtResource("6_xpmc8")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sfhm"]
+atlas = ExtResource("6_xpmc8")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3od1"]
+atlas = ExtResource("6_xpmc8")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_niuhs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_im5pw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lm4lb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sfhm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3od1")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
 [node name="EyeBall" type="Area2D"]
 script = ExtResource("1_ivdx4")
 
@@ -88,11 +125,20 @@ libraries = {
 
 [node name="SoundPlayerGetHit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_fpcff")
+volume_db = -9.0
 
 [node name="SoundPlayerHitPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_rkfob")
+volume_db = -4.0
 
 [node name="SoundPlayerBlip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_1rxmq")
 
+[node name="BloodSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+scale = Vector2(2.25, 2.25)
+sprite_frames = SubResource("SpriteFrames_niuhs")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="BloodSprite" to="." method="_on_animated_sprite_2d_animation_finished"]

@@ -8,5 +8,7 @@ extends Node
 @onready var ball : Ball = game_container.get_node("EyeBall")
 @onready var player : Player = game_container.get_node("Player")
 @onready var audio_player : AudioStreamPlayer = game_container.get_node("BGMPlayer")
+@onready var ui_container : Control = canvas_layer.get_node("UI")
 @onready var ui_health_bar : TextureProgressBar = canvas_layer.get_node("UI/HealthBar")
 @onready var ui_time_bar : TextureProgressBar = canvas_layer.get_node("UI/TimeBar")
+@onready var ui_current_multiplier : RichTextLabel = canvas_layer.get_node("UI/CurrentMultiplier")

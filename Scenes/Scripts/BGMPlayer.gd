@@ -6,9 +6,6 @@ var lastBeatTime: float = 0.0
 
 signal beat
 
-func _ready():
-	play()
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var currentTime = get_playback_position()
@@ -20,3 +17,8 @@ func _process(delta):
 #	if timeSinceLastBeat >= beatDuration:
 #		timeSinceLastBeat = 0
 #		GameManager.ball.sound_player_blip.play()
+
+
+
+func _on_play_button_pressed():
+	play()
