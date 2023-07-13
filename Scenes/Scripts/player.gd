@@ -21,3 +21,7 @@ func damage(amount: float):
 	GameManager.ui_health_bar.value = health
 	if health <= 0:
 		print('die')
+
+func _on_bgm_player_beat():
+	$AnimationPlayer.play("beat")
+	GameManager.shader_animator.play("flash")

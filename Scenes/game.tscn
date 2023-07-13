@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://qm7eviy0qe0"]
+[gd_scene load_steps=21 format=3 uid="uid://qm7eviy0qe0"]
 
 [ext_resource type="PackedScene" uid="uid://dt7pwwvr5a582" path="res://Scenes/player.tscn" id="1_h6x65"]
 [ext_resource type="Script" path="res://Scenes/game.gd" id="1_j5i48"]
@@ -6,8 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://d4lpm5nhdk08t" path="res://Scenes/eye_ball.tscn" id="3_l41dp"]
 [ext_resource type="Shader" path="res://Shaders/beat.gdshader" id="4_ttde0"]
 [ext_resource type="AudioStream" uid="uid://mc3dwy7wp7gj" path="res://Assets/Sounds/BGM.mp3" id="6_vobov"]
+[ext_resource type="Script" path="res://Scenes/Scripts/BGMPlayer.gd" id="6_wy7eg"]
 [ext_resource type="Texture2D" uid="uid://dshodi5tel8up" path="res://Assets/Sprites/health_bg.png" id="7_mdypk"]
 [ext_resource type="Texture2D" uid="uid://wfo2irwwikb6" path="res://Assets/Sprites/health_fill.png" id="8_3dpyr"]
+[ext_resource type="Texture2D" uid="uid://njou1rl6owyv" path="res://Assets/Sprites/time_bar.png" id="10_2jimx"]
+[ext_resource type="Texture2D" uid="uid://cxyhuyjyfou83" path="res://Assets/Sprites/time_bar_fill.png" id="11_e1dgs"]
+[ext_resource type="Texture2D" uid="uid://3ogg5o8hyypr" path="res://Assets/Sprites/time_text.png" id="12_hxfn4"]
+[ext_resource type="Script" path="res://Scenes/Scripts/TimeBar.gd" id="12_td8mn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w2pm4"]
 size = Vector2(320, 16)
@@ -113,8 +118,9 @@ libraries = {
 "": SubResource("AnimationLibrary_4nw2l")
 }
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_vobov")
+script = ExtResource("6_wy7eg")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -154,4 +160,30 @@ value = 100.0
 texture_under = ExtResource("7_mdypk")
 texture_progress = ExtResource("8_3dpyr")
 
+[node name="TimeBar" type="TextureProgressBar" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 11.0
+grow_horizontal = 0
+value = 100.0
+texture_under = ExtResource("10_2jimx")
+texture_progress = ExtResource("11_e1dgs")
+script = ExtResource("12_td8mn")
+
+[node name="TimeLabel" type="TextureRect" parent="CanvasLayer/UI/TimeBar"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 3.0
+texture = ExtResource("12_hxfn4")
+
 [connection signal="area_entered" from="HurtZone" to="EyeBall" method="_on_hurt_zone_area_entered"]
+[connection signal="beat" from="BGMPlayer" to="Player" method="_on_bgm_player_beat"]
+[connection signal="beat" from="BGMPlayer" to="EyeBall" method="_on_bgm_player_beat"]
+[connection signal="beat" from="BGMPlayer" to="CanvasLayer/UI/TimeBar" method="_on_bgm_player_beat"]
