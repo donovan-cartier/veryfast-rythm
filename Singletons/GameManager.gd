@@ -12,3 +12,17 @@ extends Node
 @onready var ui_health_bar : TextureProgressBar = canvas_layer.get_node("UI/HealthBar")
 @onready var ui_time_bar : TextureProgressBar = canvas_layer.get_node("UI/TimeBar")
 @onready var ui_current_multiplier : RichTextLabel = canvas_layer.get_node("UI/CurrentMultiplier")
+
+func refresh_nodes():
+	game_container = get_tree().get_root().get_node("Game")
+	camera = game_container.get_node("Camera2D")
+	canvas_layer = game_container.get_node("CanvasLayer")
+	screen_shader = canvas_layer.get_node("ScreenShader")
+	shader_animator = screen_shader.get_node("ShaderAnimator")
+	ball = game_container.get_node("EyeBall")
+	player = game_container.get_node("Player")
+	audio_player = game_container.get_node("BGMPlayer")
+	ui_container = canvas_layer.get_node("UI")
+	ui_health_bar = canvas_layer.get_node("UI/HealthBar")
+	ui_time_bar = canvas_layer.get_node("UI/TimeBar")
+	ui_current_multiplier = canvas_layer.get_node("UI/CurrentMultiplier")

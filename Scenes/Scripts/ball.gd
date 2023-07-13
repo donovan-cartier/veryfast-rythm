@@ -21,7 +21,6 @@ var got_hit: bool = false
 
 func _ready():
 	next_location_marker_instance = next_location_marker.instantiate()
-	GameManager.game_container.add_child.call_deferred(next_location_marker_instance)
 
 func start_sequence():
 	got_hit = false
@@ -81,3 +80,9 @@ func _on_bgm_player_beat():
 
 func _on_animated_sprite_2d_animation_finished():
 	blood_sprite.visible = false
+
+
+func _on_bgm_player_finished():
+	GameManager.player.can_move = false
+	await get_tree().create_timer(1).timeout
+	animation_player.play("death")

@@ -22,3 +22,4 @@ func _process(delta):
 
 func _on_play_button_pressed():
 	play()
+	GameManager.game_container.add_child(GameManager.ball.next_location_marker_instance)
